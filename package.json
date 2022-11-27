@@ -10,19 +10,19 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscode-ext.helloWorld",
-    "onCommand:extension.addToBucketList"
+    "onCommand:extension.addToBucketList",
+    "onCommand:extension.resetBucketList"
   ],
   "main": "./out/extension.js",
   "contributes": {  
     "commands": [
       {
-        "command": "vscode-ext.helloWorld",
-        "title": "Hello World"
-      },
-      {
         "command": "extension.addToBucketList",
         "title": "Add to Bucket List"
+      },
+      {
+        "command": "extension.resetBucketList",
+        "title": "Reset Bucket List"
       }
     ],
     "menus": {
@@ -30,7 +30,7 @@
         {
           "when": "editorFocus",
           "command": "extension.addToBucketList",
-          "group": "navigation"
+          "group": "1_modification"
         }
       ]
     }

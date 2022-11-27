@@ -1,29 +1,33 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deactivate = exports.activate = void 0;
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+exports.deactivate = exports.add = exports.activate = void 0;
 const vscode = require("vscode");
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+const stateManager_1 = require("./stateManager");
 function activate(context) {
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "vscode-ext" is now active!');
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('vscode-ext.helloWorld', () => {
-        // The code you place here will be executed every time your command is executed
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World VSCode!');
-    });
-    disposable = vscode.commands.registerCommand('extension.addToBucketList', () => {
+    let disposable = vscode.commands.registerCommand('extension.addToBucketList', () => {
+        const state = (0, stateManager_1.stateManager)(context);
+        const activeEditor = vscode.window.activeTextEditor;
+        var list = state.read().latestList;
+        //check for value not null
+        if (activeEditor?.document.fileName)
+            list.push(activeEditor?.document.fileName);
+        console.log(JSON.stringify(list));
+        state.write(list);
         vscode.window.showInformationMessage('Added to Bucket List!');
+    });
+    disposable = vscode.commands.registerCommand('extension.resetBucketList', () => {
+        const state = (0, stateManager_1.stateManager)(context);
+        state.reset();
+        vscode.window.showInformationMessage('Bucket List Resetted!');
     });
     context.subscriptions.push(disposable);
 }
 exports.activate = activate;
+function add(list, path) {
+    list.push(path);
+    return list;
+}
+exports.add = add;
 // This method is called when your extension is deactivated
 function deactivate() { }
 exports.deactivate = deactivate;
