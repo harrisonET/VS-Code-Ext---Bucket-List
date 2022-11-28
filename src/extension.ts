@@ -9,10 +9,14 @@ export function activate(context: vscode.ExtensionContext) {
 
 		var list = state.read().latestList;
 
-		//check for value not null
-		if(activeEditor?.document.fileName)
-			(list as string[]).push(activeEditor?.document.fileName);
+		if(list === undefined){
+			list = [];
+		}
 
+		//check for value not null
+		if(activeEditor?.document.fileName){
+			list = addWithRemoveDuplicates((list as string[]), activeEditor?.document.fileName);
+		}
 		console.log(JSON.stringify(list));
 
 		state.write(list);
@@ -29,9 +33,14 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(disposable);
 }
 
-export function add(list: string[], path: string)	{
+export function addWithRemoveDuplicates(list: string[], path: string)	{
 	list.push(path);
-	return list;
+
+	let uniqueList = list.filter((element, index) => {
+		return list.indexOf(element) === index;
+	});
+
+	return uniqueList;
 }
 
 // This method is called when your extension is deactivated
