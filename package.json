@@ -33,6 +33,23 @@
           "group": "1_modification"
         }
       ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "bucket-list",
+          "title": "Bucket List",
+          "icon": "./src/media/package-explorer.png"
+        }
+      ]
+    },
+    "views": {
+      "bucket-list" :[
+        {
+          "id": "main",
+          "name": "main"
+        }
+      ]
     }
   },
   "scripts": {
